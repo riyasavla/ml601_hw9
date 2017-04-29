@@ -1,0 +1,7 @@
+Paramteres to Tune 
+
+1. Learning Rate 
+2. Batch Size 
+3. When do we cahnge lr and by how much
+4. Relu / sigmoid 
+5. Add/Subtract Layers
