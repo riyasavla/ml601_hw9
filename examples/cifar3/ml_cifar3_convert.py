@@ -1,6 +1,7 @@
 import caffe
 import lmdb
 import numpy as np
+import random
 import matplotlib.pyplot as plt
 from caffe.proto import caffe_pb2
 from caffe.io import datum_to_array, array_to_datum
@@ -18,7 +19,8 @@ print data.shape
 print labels.shape
 
 N = data.shape[0]
-N_train = 10000
+N_train = 9000
+N_test = 12000 - N_train
 ch = 3
 h_in = 32
 w_in = 32
@@ -26,8 +28,14 @@ w_in = 32
 map_size = data.nbytes * 2
 env = lmdb.open('cifar3_train_lmdb', map_size=map_size)
 
+indices = range(N)
+random.shuffle(indices)
+
+train_indices = indices[:N_train]
+
 with env.begin(write=True) as txn:
-    for i in xrange(N_train):
+    #for i in xrange(N_train):
+    for i in train_indices:
         X = data[i].reshape((3, h_in, w_in))
         # X_reshuffled = np.moveaxis(X, 0, 2)
         # im = Image.fromarray(X_reshuffled)
@@ -48,7 +56,7 @@ with env.begin(write=True) as txn:
 # print data.shape
 # print labels.shape
 
-N_test = 2000
+test_indices = indices[N_train:]
 
 map_size = data.nbytes * 2
 env = lmdb.open('cifar3_test_lmdb', map_size=map_size)
