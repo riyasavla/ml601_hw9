@@ -35,7 +35,7 @@ def compute_train_cov(data):
         cov_dict[str(c)] = cov
     scipy.io.savemat('zca.mat', cov_dict)
     return  cov_dict
-    
+
 # Per channel ZCA whitening
 def my_zca(data, cov_dict):
     eps = 0.000000001
@@ -122,7 +122,7 @@ def vis_few_whitened_images():
     print X_all.shape
     vis_square(X_all)
 
-vis_few_whitened_images()
+#vis_few_whitened_images()
 
 
 with env.begin(write=True) as txn:
@@ -134,16 +134,16 @@ with env.begin(write=True) as txn:
         max_im = X_reshuffled.max()
         min_im = X_reshuffled.min()
         X_vis = (X_reshuffled + min_im) / (max_im - min_im)
-        plt.show(imshow(X_vis))
-        #plt.show(imshow(X_reshuffled.astype(np.uint8)))
-        # im = Image.fromarray(X_reshuffled)
-        # im.show()
-        datum = caffe.proto.caffe_pb2.Datum()
-        datum.channels = X.shape[0]
-        datum.height = X.shape[1]
-        datum.width = X.shape[2]
-        datum.data = X.tobytes()
-        datum.label = int(labels[i])
+        #plt.show(imshow(X_vis))
+
+        #datum = caffe.proto.caffe_pb2.Datum()
+        # datum.channels = X.shape[0]
+        # datum.height = X.shape[1]
+        # datum.width = X.shape[2]
+        # datum.data = X.tobytes()
+        #datum.label = int(labels[i])
+
+        datum = caffe.io.array_to_datum(X, int(labels[i]))
         str_id = '{:08}'.format(i)
         txn.put(str_id.encode('ascii'), datum.SerializeToString())
 
@@ -174,12 +174,14 @@ with env.begin(write=True) as txn:
         # X_reshuffled = np.moveaxis(X, 0, 2)
         # im = Image.fromarray(X_reshuffled)
         # im.show()
-        datum = caffe.proto.caffe_pb2.Datum()
-        datum.channels = X.shape[0]
-        datum.height = X.shape[1]
-        datum.width = X.shape[2]
-        datum.data = X.tobytes()
-        datum.label = int(labels[N_train + i])
+        # datum = caffe.proto.caffe_pb2.Datum()
+        # datum.channels = X.shape[0]
+        # datum.height = X.shape[1]
+        # datum.width = X.shape[2]
+        # datum.data = X.tobytes()
+        # datum.label = int(labels[N_train + i])
+
+        datum = caffe.io.array_to_datum(X, int(labels[N_train + i]))
         str_id = '{:08}'.format(i)
         txn.put(str_id.encode('ascii'), datum.SerializeToString())
 
