@@ -8,5 +8,5 @@ CAFFE_ROOT=/Users/riya/caffe
 TOOLS=build/tools
 EXAMPLE=examples/cifar3
 
-$CAFFE_ROOT/$TOOLS/compute_image_mean $CAFFE_ROOT/$EXAMPLE/cifar3_train_lmdb \
-  $CAFFE_ROOT/$EXAMPLE/mean.binaryproto
+#$CAFFE_ROOT/$TOOLS/compute_image_mean $CAFFE_ROOT/$EXAMPLE/cifar3_train_lmdb \
+ # $CAFFE_ROOT/$EXAMPLE/mean.binaryproto
